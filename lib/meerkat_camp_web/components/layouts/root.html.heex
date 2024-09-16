@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="[scrollbar-gutter:stable]">
-  <head>
+<html lang="en">
+ <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
@@ -10,8 +10,93 @@
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
-  </head>
-  <body class="bg-white">
-    <%= @inner_content %>
-  </body>
+ </head>
+ <body>
+   <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+     <%= if @current_user do %>
+       <li class="text-[0.8125rem] leading-6 text-zinc-900">
+         <%= @current_user.email %>
+       </li>
+       <li>
+         <.link
+           href={~p"/users/settings"}
+           class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+         >
+           Settings
+         </.link>
+       </li>
+       <li>
+         <.link
+           href={~p"/users/log_out"}
+           method="delete"
+           class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+         >
+           Log out
+         </.link>
+       </li>
+     <% else %>
+       <li>
+         <.link
+           href={~p"/users/register"}
+           class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+         >
+           Register
+         </.link>
+       </li>
+       <li>
+         <.link
+           href={~p"/users/log_in"}
+           class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+         >
+           Log in
+         </.link>
+       </li>
+     <% end %>
+   </ul>
+  <div class="w-full flex h-svh max-h-svh">
+   <div class="hidden h-full flex-[0.3] md:block">
+    <!-- Left Sidebar -->
+    <div class="grid h-full place-content-center bg-green-600">
+     <h1 class="text-xl">Left</h1>
+     <h1 class="text-xl">Sidebar</h1>
+    </div>
+   </div>
+
+   <div class="flex h-full flex-1 flex-col">
+    <!-- Main Content Area-->
+    <div class="flex h-full flex-col justify-between overflow-y-scroll">
+     <div class="sticky top-0 w-full">
+      <!-- Header -->
+      <div class="bg-orange-500 py-5">
+       <h1 class="text-center text-xl">Meerkat.camp</h1>
+      </div>
+     </div>
+
+     <div>
+        <.flash_group flash={@flash} />
+        <%= @inner_content %>
+     </div>
+
+     <div class="w-full">
+      <!-- Footer -->
+      <div class="bg-yellow-600 py-12">
+       <h1 class="text-center text-xl">Footer</h1>
+      </div>
+     </div>
+    </div>
+
+    <div class="sticky top-0 block bg-pink-500 py-5 md:hidden">
+     <h1 class="text-center text-xl">Bottom Navigation</h1>
+    </div>
+   </div>
+
+   <div class="hidden h-full flex-[0.3] lg:block">
+    <!-- Right Sidebar -->
+    <div class="grid h-full place-content-center bg-blue-600">
+     <h1 class="text-xl">Right</h1>
+     <h1 class="text-xl">Sidebar</h1>
+    </div>
+   </div>
+  </div>
+ </body>
 </html>
